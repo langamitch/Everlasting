@@ -25,6 +25,43 @@
             position: relative;
         }
 
+        .scroll-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background: #000000;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: background-color 0.3s ease;
+        }
+
+        .scroll-button:hover {
+            background: #333333;
+        }
+
+        .scroll-left {
+            left: 20px;
+        }
+
+        .scroll-right {
+            right: 20px;
+        }
+
+        @media (min-width: 1200px) {
+            .scroll-button {
+                display: flex;
+            }
+        }
+
         .cards-container {
             display: flex;
             gap: 60px;
@@ -60,7 +97,7 @@
             width: 280px;
             height: 600px;
             background: #f8f9fa;
-            border-radius: 16px;
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -407,6 +444,8 @@
     
     <section class="showcase">
         <div class="showcase-container">
+            <button class="scroll-button scroll-left" id="scrollLeft" aria-label="Scroll left">←</button>
+            <button class="scroll-button scroll-right" id="scrollRight" aria-label="Scroll right">→</button>
             <div class="cards-container" id="cardsContainer">
                 <div class="app-card" data-app="inspia">
                     <div class="phone-screen">
@@ -480,19 +519,19 @@
        <h1>Evalasting</h1>
         </p>
         <div class="about-content">
-          <p class="about-title"> We're Everlasting Studio</p>
+          <p class="about-title"> We're base-studio.</p>
           <p class="about-description">We collaborate with founders and startups to craft purposeful, high-converting design that resonates deeply with users and lasts far beyond trends.
         </p>
           <p class="about-title"> Founder</p>
-          <p class="about-description">Everlasting Studio was founded early 2025 by Wandile, a designer and developer with a passion for creating beautiful and functional digital experiences. He is a self-taught designer and developer who is always looking to learn and grow.</p>
+          <p class="about-description">base-studio was founded early 2025 by Wandile, a designer and developer with a passion for creating beautiful and functional digital experiences. He is a self-taught designer and developer who is always looking to learn and grow.</p>
         
           <p class="about-title"> Our Services</p>
           <p class="about-description">We offer a range of services to help you create a beautiful and functional digital experience. We offer branding, design, development, and marketing services.</p>
         
           <p class="about-title"> Contact Us</p>
-          <p class="about-description">If you're interested in working with us, please contact us at <a href="mailto:contact@everlastingstudio.com">contact@everlastingstudio.com</a>.</p>
+          <p class="about-description">If you're interested in working with us, please contact us at <a href="mailto:contact@basestudio.com">contact@basestudio.com</a>.</p>
         <button class="contact-button trigger-button" id="openPopup">Book a call</button>
-          <p class="about-title"> © 2025 Everlasting studio. All rights reserved.</p>
+          <p class="about-title"> © 2025 base-studio. All rights reserved.</p>
          
         
         </div>
@@ -597,7 +636,23 @@
     <script>
         const cards = document.querySelectorAll('.app-card');
         const container = document.getElementById('cardsContainer');
+        const scrollLeftBtn = document.getElementById('scrollLeft');
+        const scrollRightBtn = document.getElementById('scrollRight');
 
+        // Scroll button functionality
+        scrollLeftBtn.addEventListener('click', () => {
+            container.scrollBy({
+                left: -400,
+                behavior: 'smooth'
+            });
+        });
+
+        scrollRightBtn.addEventListener('click', () => {
+            container.scrollBy({
+                left: 400,
+                behavior: 'smooth'
+            });
+        });
 
         // Optional: Add scroll-based activation
         container.addEventListener('scroll', () => {
