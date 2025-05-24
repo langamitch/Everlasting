@@ -45,18 +45,20 @@
         .app-card {
             min-width: 320px;
             flex-shrink: 0;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-           
+           margin-top: 20px;
             cursor: pointer;
             position: relative;
             scroll-snap-align: center;
+            border: none;
         }
 
         .phone-screen {
-            width: 320px;
-            height: 672px;
+            width: 280px;
+            height: 600px;
             background: #f8f9fa;
             border-radius: 16px;
             display: flex;
@@ -123,10 +125,6 @@
 
        
 
-        .active .phone-screen::before,
-        .active .phone-screen::after {
-            background: #ffffff;
-        }
 
         @media (max-width: 1200px) {
             .cards-container {
@@ -173,18 +171,20 @@
             .cards-container {
                 gap: 30px;
                 padding: 20px 15px;
+
             }
             
             .phone-screen {
                 width: 200px;
                 height: 430px;  
-                border-radius: 13px;
+                border-radius: 18px;
                 object-fit: cover;
                 object-position: center;
             }
             
             .app-card {
                 min-width: 170px;
+                padding: 0px;
             }
             
             .app-name {
