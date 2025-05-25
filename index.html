@@ -427,7 +427,15 @@
             font-weight: 500;
             cursor: pointer;
             margin-top: 10px;
-            
+        }
+
+        .success-message {
+            display: none;
+            color: #28a745;
+            font-size: 16px;
+            margin: 15px 0;
+            text-align: center;
+            font-weight: 500;
         }
 
         .note {
@@ -563,6 +571,7 @@
                         <input type="number" placeholder="Contact number" required>
                     </div>
                     <button type="submit" class="submit-btn">Submit Booking</button>
+                    <div class="success-message" id="successMessage">Thank you! Your booking has been submitted successfully.</div>
                 </form>
                 <p style="font-size: 13px;
                 color: #888;
@@ -612,28 +621,49 @@
             submissionForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const submitBtn = submissionForm.querySelector('.submit-btn');
+                const successMessage = document.getElementById('successMessage');
                 submitBtn.disabled = true;
                 const originalText = submitBtn.textContent;
                 submitBtn.textContent = 'Submitting Booking...';
-                const name = submissionForm.querySelector('input[placeholder*="Name"]').value;
-                const email = submissionForm.querySelector('input[type="email"]')?.value;
-                const number = submissionForm.querySelector('input[type="number"]')?.value;
+
                 try {
-                    await addDoc(collection(db, "bookings"), {
+                    const name = submissionForm.querySelector('input[placeholder*="Name"]').value;
+                    const email = submissionForm.querySelector('input[type="email"]').value;
+                    const number = submissionForm.querySelector('input[type="number"]').value;
+
+                    const docRef = await addDoc(collection(db, "bookings"), {
                         name,
                         email,
                         number,
                         timestamp: Date.now()
                     });
-                    submitBtn.textContent = 'Booking Submitted!';
+
+                    // Hide form elements
+                    submissionForm.querySelectorAll('.form-control').forEach(el => el.style.display = 'none');
+                    submitBtn.style.display = 'none';
+                    
+                    // Show success message
+                    successMessage.style.display = 'block';
+                    successMessage.style.color = '#28a745';
+                    successMessage.style.fontSize = '16px';
+                    successMessage.style.margin = '15px 0';
+                    successMessage.style.textAlign = 'center';
+                    successMessage.style.fontWeight = '500';
+                    successMessage.textContent = 'Thank you! Your booking has been submitted successfully.';
+                    
                     setTimeout(() => {
                         popupOverlay.style.display = 'none';
                         submissionForm.reset();
+                        // Reset form display
+                        submissionForm.querySelectorAll('.form-control').forEach(el => el.style.display = 'block');
+                        submitBtn.style.display = 'block';
+                        successMessage.style.display = 'none';
                         submitBtn.textContent = originalText;
                         submitBtn.disabled = false;
-                    }, 1500);
+                    }, 3000);
                 } catch (error) {
-                    alert('Error: ' + error.message);
+                    console.error('Error submitting form:', error);
+                    alert('Error submitting form: ' + error.message);
                     submitBtn.textContent = originalText;
                     submitBtn.disabled = false;
                 }
