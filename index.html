@@ -588,7 +588,7 @@
                         <input type="number" placeholder="Contact number" required>
                     </div>
                     <button type="submit" class="submit-btn">Submit Booking</button>
-                    <div class="success-message" id="successMessage">Thank you! Your booking has been submitted successfully.</div>
+                    <div class="success-message" id="successMessage">Thank you for booking a call with base-studios! We're excited to connect with you. Your booking has been successfully received, and a member of our team will be in touch shortly. We appreciate your interest and look forward to learning more about how we can support your goals.</div>
                 </form>
                 <p style="font-size: 13px;
                 color: #888;
@@ -677,7 +677,7 @@
                         successMessage.style.display = 'none';
                         submitBtn.textContent = originalText;
                         submitBtn.disabled = false;
-                    }, 10000);
+                    }, 15000);
                 } catch (error) {
                     console.error('Error submitting form:', error);
                     alert('Error submitting form: ' + error.message);
