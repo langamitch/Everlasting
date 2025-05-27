@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>base-studio - Dashboard</title>
+    <link rel="icon" href="images/logo.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-size: 13px;
+            background: #ffffff;
+            min-height: 100vh;
+         
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark-mode {
+            background: #1a1a1a;
+            color: #ffffff;
+        }
+
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 12px;
+        }
+
+        .header h1 {
+            font-size: 13px;
+            font-weight: 600;
+            color: #000000;
+            marg
+            
+        }
+
+        .logo {
+            width: 32px;
+            height: 32px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+            gap: 20px;
+            padding: 10px;
+        }
+
+        .submission-card {
+            background: #ffffff;
+            border-radius: 30px;
+            padding: 24px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease;
+        }
+
+        body.dark-mode .submission-card {
+            background: #2d2d2d;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        body.dark-mode .card-title,
+        body.dark-mode .info-value {
+            color: #ffffff;
+        }
+
+        body.dark-mode .info-label {
+            color: #999999;
+        }
+
+        body.dark-mode .timestamp {
+            color: #999999;
+        }
+
+        body.dark-mode .refresh-btn {
+            background: #ffffff;
+            color: #000000;
+        }
+
+        body.dark-mode .refresh-btn:hover {
+            background: #e0e0e0;
+        }
+
+        body.dark-mode .sign-out-btn {
+            background: #2d2d2d;
+            color: #ffffff;
+        }
+
+        body.dark-mode .sign-out-btn:hover {
+            background: #3d3d3d;
+        }
+
+        body.dark-mode .loading,
+        body.dark-mode .no-submissions {
+            color: #999999;
+        }
+
+        .theme-toggle {
+            background: #f8f9fa;
+            color: #666666;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 60px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .theme-toggle:hover {
+            background: #e9ecef;
+            color: #000000;
+        }
+
+        body.dark-mode .theme-toggle {
+            background: #2d2d2d;
+            color: #ffffff;
+        }
+
+        body.dark-mode .theme-toggle:hover {
+            background: #3d3d3d;
+        }
+
+        .no-submissions {
+            text-align: center;
+            padding: 40px;
+            color: #888888;
+            font-size: 16px;
+            grid-column: 1 / -1;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #888888;
+            grid-column: 1 / -1;
+        }
+
+        .refresh-btn {
+            background: #000000;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 60px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+
+        .refresh-btn:hover {
+            background: #333333;
+        }
+
+        .sign-out-btn {
+            background: #f8f9fa;
+            color: #666666;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 60px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .sign-out-btn:hover {
+            background: #e9ecef;
+            color: #000000;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        body.dark-mode .card-header {
+            border-bottom-color: #3d3d3d;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #000000;
+            margin: 0;
+        }
+
+        .timestamp {
+            color: #888888;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .card-content {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+        }
+
+        .info-label {
+            color: #666666;
+            font-size: 13px;
+            min-width: 80px;
+            font-weight: 500;
+        }
+
+        .info-value {
+            color: #000000;
+            font-size: 13px;
+            flex: 1;
+        }
+
+        body.dark-mode .info-value {
+            color: #ffffff;
+        }
+
+        body.dark-mode .info-label {
+            color: #999999;
+        }
+
+        .submission-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-mode .submission-card:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #f0f0f0;
+            flex-direction: row;
+        }
+
+        body.dark-mode .card-actions {
+            border-top-color: #3d3d3d;
+        }
+
+        .action-btn {
+            padding: 8px 16px;
+            border-radius: 60px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            flex: 1;
+            white-space: nowrap;
+            min-width: 100px;
+        }
+
+        .attend-btn {
+            background: #000000;
+            color: #ffffff;
+        }
+
+        .attend-btn:hover {
+            background: #333333;
+        }
+
+        .attend-btn.attended {
+            background: #28a745;
+        }
+
+        .attend-btn.attended:hover {
+            background: #218838;
+        }
+
+        .remove-btn {
+            background: #f8f9fa;
+            color: #dc3545;
+        }
+
+        .remove-btn:hover {
+            background: #dc3545;
+            color: #ffffff;
+        }
+
+        body.dark-mode .attend-btn {
+            background: #ffffff;
+            color: #000000;
+        }
+
+        body.dark-mode .attend-btn:hover {
+            background: #e0e0e0;
+        }
+
+        body.dark-mode .attend-btn.attended {
+            background: #28a745;
+            color: #ffffff;
+        }
+
+        body.dark-mode .remove-btn {
+            background: #2d2d2d;
+            color: #dc3545;
+        }
+
+        body.dark-mode .remove-btn:hover {
+            background: #dc3545;
+            color: #ffffff;
+        }
+
+        @media (max-width: 768px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+                max-width: 500px;
+                margin: 0 auto;
+                padding: 10px;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+                padding: 0 20px;
+            }
+
+            .header-right {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .card-actions {
+                flex-direction: row;
+                gap: 8px;
+                margin-top: 15px;
+                padding-top: 12px;
+            }
+
+            .action-btn {
+                padding: 8px 12px;
+                font-size: 16px;
+                min-width: 80px;
+            }
+
+            .submission-card {
+                padding: 20px;
+            }
+
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .timestamp {
+                font-size: 13px;
+            }
+
+            .info-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+
+            .info-label {
+                min-width: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dashboard-container {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 18px;
+            }
+
+            .logo {
+                width: 28px;
+                height: 28px;
+            }
+
+            .cards-grid {
+                padding: 5px;
+            }
+
+            .submission-card {
+                padding: 16px;
+            }
+
+            .action-btn {
+                padding: 6px 10px;
+                font-size: 16px;
+                min-width: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="header">
+            <div class="header-left">
+                <img src="images/logo.png" alt="base-studio logo" class="logo">
+                <h1>Submissions Dashboard</h1>
+            </div>
+            <div class="header-right">
+                <button class="theme-toggle" id="themeToggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    
+                </button>
+                <button class="refresh-btn" id="refreshBtn">Refresh</button>
+                <button class="sign-out-btn" id="signOutBtn">Sign Out</button>
+            </div>
+        </div>
+        
+        <div id="submissionsContainer">
+            <div class="loading">Loading submissions...</div>
+        </div>
+    </div>
+
+    <!-- Firebase App (the core Firebase SDK) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <!-- Firebase Database -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <!-- Add Firestore SDK -->
+    <script src="https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js"></script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+        import { getFirestore, collection, getDocs, query, orderBy, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAM4BVHqjFhE7IA4BXbXAgzyNaWLJQuy1A",
+            authDomain: "clothing-store-ea06f.firebaseapp.com",
+            projectId: "clothing-store-ea06f",
+            storageBucket: "clothing-store-ea06f.appspot.com",
+            messagingSenderId: "283493903260",
+            appId: "1:283493903260:web:63b83b2332d775f4173659",
+            measurementId: "G-ZDRVRMYWXJ"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // Check authentication state
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                // Redirect to login if not authenticated
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Sign out functionality
+        const signOutBtn = document.getElementById('signOutBtn');
+        signOutBtn.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                window.location.href = 'login.html';
+            } catch (error) {
+                console.error('Error signing out:', error);
+            }
+        });
+
+        const submissionsContainer = document.getElementById('submissionsContainer');
+        const refreshBtn = document.getElementById('refreshBtn');
+
+        function formatDate(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        async function loadSubmissions() {
+            try {
+                submissionsContainer.innerHTML = '<div class="loading">Loading submissions...</div>';
+                
+                const q = query(collection(db, "bookings"), orderBy("timestamp", "desc"));
+                const querySnapshot = await getDocs(q);
+                
+                if (querySnapshot.empty) {
+                    submissionsContainer.innerHTML = '<div class="no-submissions">No submissions yet</div>';
+                    return;
+                }
+
+                let cardsHTML = '<div class="cards-grid">';
+
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    cardsHTML += `
+                        <div class="submission-card">
+                            <div class="card-header">
+                                <h3 class="card-title">${data.name}</h3>
+                                <span class="timestamp">${formatDate(data.timestamp)}</span>
+                            </div>
+                            <div class="card-content">
+                                <div class="info-row">
+                                    <span class="info-label">Email:</span>
+                                    <span class="info-value">${data.email}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Phone:</span>
+                                    <span class="info-value">${data.number}</span>
+                                </div>
+                                <div class="card-actions">
+                                    <button class="action-btn attend-btn ${data.attended ? 'attended' : ''}" data-id="${doc.id}" data-attended="${data.attended || false}">
+                                        ${data.attended ? 'Attended' : 'Attend'}
+                                    </button>
+                                    <button class="action-btn remove-btn" data-id="${doc.id}">Remove</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                cardsHTML += '</div>';
+                submissionsContainer.innerHTML = cardsHTML;
+
+                // Add event listeners for the new buttons
+                document.querySelectorAll('.attend-btn').forEach(btn => {
+                    btn.addEventListener('click', async (e) => {
+                        const docId = e.target.dataset.id;
+                        const isAttended = e.target.dataset.attended === 'true';
+                        try {
+                            await updateDoc(doc(db, "bookings", docId), {
+                                attended: !isAttended
+                            });
+                            loadSubmissions(); // Reload to show updated state
+                        } catch (error) {
+                            console.error("Error updating attendance:", error);
+                        }
+                    });
+                });
+
+                document.querySelectorAll('.remove-btn').forEach(btn => {
+                    btn.addEventListener('click', async (e) => {
+                        if (confirm('Are you sure you want to remove this submission?')) {
+                            const docId = e.target.dataset.id;
+                            try {
+                                await deleteDoc(doc(db, "bookings", docId));
+                                loadSubmissions(); // Reload to show updated state
+                            } catch (error) {
+                                console.error("Error removing submission:", error);
+                            }
+                        }
+                    });
+                });
+            } catch (error) {
+                console.error("Error loading submissions:", error);
+                submissionsContainer.innerHTML = '<div class="no-submissions">Error loading submissions. Please try again.</div>';
+            }
+        }
+
+        // Load submissions on page load
+        loadSubmissions();
+
+        // Refresh button click handler
+        refreshBtn.addEventListener('click', loadSubmissions);
+
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+        
+        // Check for saved theme preference or use system preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark' || (!savedTheme && prefersDarkScheme.matches)) {
+            document.body.classList.add('dark-mode');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            // Save preference
+            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        });
+
+        // Listen for system theme changes
+        prefersDarkScheme.addEventListener('change', (e) => {
+            if (!localStorage.getItem('theme')) {
+                document.body.classList.toggle('dark-mode', e.matches);
+            }
+        });
+    </script>
+</body>
+</html> 
